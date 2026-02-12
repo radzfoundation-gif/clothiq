@@ -64,6 +64,12 @@ export default function Navbar() {
                     >
                         Pricing
                     </Link>
+                    <Link
+                        href="/experience"
+                        className={`text-sm font-medium transition-colors ${pathname === '/experience' ? 'text-primary dark:text-white' : 'text-primary/70 dark:text-white/70 hover:text-primary dark:hover:text-white'}`}
+                    >
+                        Try It Now
+                    </Link>
                 </div>
 
                 {/* CTA */}
@@ -91,6 +97,9 @@ export default function Navbar() {
                                             <p className="text-xs text-primary/50 dark:text-white/50">Signed in as</p>
                                             <p className="text-sm font-bold text-primary dark:text-white truncate">{user.email}</p>
                                         </div>
+                                        <Link href="/experience" className="block px-4 py-2.5 text-sm text-primary/70 dark:text-white/70 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-colors">
+                                            Try It Now
+                                        </Link>
                                         <Link href="/profile" className="block px-4 py-2.5 text-sm text-primary/70 dark:text-white/70 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-colors">
                                             Your Profile
                                         </Link>
@@ -109,12 +118,20 @@ export default function Navbar() {
                             )}
                         </div>
                     ) : (
-                        <button
-                            onClick={() => openAuth("signin")}
-                            className="px-8 py-3 rounded-full bg-primary text-white dark:bg-white dark:text-primary font-bold text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
-                        >
-                            Login
-                        </button>
+                        <div className="flex items-center gap-3">
+                            <Link
+                                href="/experience"
+                                className="hidden sm:block text-sm font-bold text-primary/70 hover:text-primary transition-colors px-4"
+                            >
+                                Beta Access
+                            </Link>
+                            <button
+                                onClick={() => openAuth("signin")}
+                                className="px-8 py-3 rounded-full bg-primary text-white dark:bg-white dark:text-primary font-bold text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
+                            >
+                                Login
+                            </button>
+                        </div>
                     )}
                 </div>
             </nav>
