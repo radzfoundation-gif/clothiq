@@ -29,10 +29,17 @@ export default function WaitlistPage() {
                 body: JSON.stringify({ email, honeypot }),
             });
 
-            const data = await response.json();
+            let data;
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                data = await response.json();
+            } else {
+                const text = await response.text();
+                throw new Error(`Server error: ${response.status}. Please check server logs.`);
+            }
 
             if (!response.ok) {
-                throw new Error(data.error || 'Something went wrong');
+                throw new Error(data?.error || 'Something went wrong');
             }
 
             if (data.message) {

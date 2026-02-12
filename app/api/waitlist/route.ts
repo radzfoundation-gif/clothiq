@@ -5,7 +5,13 @@ import { Resend } from 'resend';
 export async function POST(request: Request) {
     const { email, honeypot } = await request.json();
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+        console.error("RESEND_API_KEY is not configured.");
+        return NextResponse.json({ error: "Email configuration missing on server." }, { status: 500 });
+    }
+
+    const resend = new Resend(apiKey);
 
     // 1. SPAM CHECK: Honeypot
     if (honeypot) {
