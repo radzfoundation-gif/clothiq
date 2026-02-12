@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import Navbar from "@/components/Navbar";
-
 import { createClient } from "@/utils/supabase/server";
 
 export default async function Home() {
@@ -102,6 +101,8 @@ export default async function Home() {
           </div>
         </main>
 
+
+
         {/* Simple Footer for Context */}
         <footer className="border-t border-primary/5 dark:border-white/5 py-12">
           <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -113,7 +114,7 @@ export default async function Home() {
             </div>
           </div>
         </footer>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

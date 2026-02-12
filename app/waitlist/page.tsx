@@ -18,21 +18,31 @@ export default function WaitlistPage() {
         setMessage(null);
 
         try {
-            const { error } = await supabase
-                .from('waitlist')
-                .insert([{ email }]);
+            const formData = new FormData(e.currentTarget as HTMLFormElement);
+            const honeypot = formData.get('hp_name'); // Check honeypot
 
-            if (error) {
-                if (error.code === '23505') { // Unique violation
-                    setMessage({ type: "success", text: "You are already on the list!" });
-                    setSubmitted(true);
-                    return;
-                }
-                throw error;
+            const response = await fetch('/api/waitlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, honeypot }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Something went wrong');
             }
 
-            console.log("Joined waitlist:", email);
-            setSubmitted(true);
+            if (data.message) {
+                if (data.message === "You are already on the list!") {
+                    setMessage({ type: "error", text: "This email is already on the waitlist." });
+                    // Do not setSubmitted(true) so the user sees the warning on the form
+                } else {
+                    setSubmitted(true);
+                }
+            }
         } catch (error: any) {
             console.error("Error joining waitlist:", error);
             setMessage({ type: "error", text: error.message || "Something went wrong. Please try again." });
@@ -96,6 +106,14 @@ export default function WaitlistPage() {
                                 </div>
                             )}
                             <div className="relative">
+                                {/* Honeypot - Hidden from real users */}
+                                <input
+                                    type="text"
+                                    name="hp_name"
+                                    style={{ display: 'none' }}
+                                    tabIndex={-1}
+                                    autoComplete="off"
+                                />
                                 <input
                                     type="email"
                                     required
